@@ -5,36 +5,46 @@
 A modern, extensible infrastructure stack for AI applications.
 
 ## Features
-- Modular service health checking
-- Plugin-based architecture
-- Easy to extend and maintain
+- Modular service health checking.
+- Plugin-based architecture for easy extension.
+- Pre-configured Docker environment for essential services: MySQL, Redis, Elasticsearch, and Neo4j.
+- Connection testers for all integrated services.
 
 ## Getting Started
 
 ### Prerequisites
-- Python 3.8+
-- Redis (for testing Redis connectivity)
+- Docker and Docker Compose
+- Python 3.8+ (Conda is recommended for environment management)
+- `uv` (optional, for faster package installation within a Conda environment)
 
 ### Installation
-```bash
-# Clone the repository
-$ git clone https://github.com/yourusername/ai-infra-stack.git
-$ cd ai-infra-stack
+1. **Start the infrastructure services:**
+   All backend services are managed by Docker Compose.
+   ```bash
+   docker-compose up -d
+   ```
 
-# (Optional) Create a virtual environment
-$ python3 -m venv venv
-$ source venv/bin/activate
+2. **Set up the Python environment:**
+   ```bash
+   # Clone the repository
+   $ git clone https://github.com/yourusername/ai-infra-stack.git
+   $ cd ai-infra-stack
 
-# Install dependencies
-$ pip install -r requirements.txt
-```
+   # Create and activate a Conda environment (replace 'ai-infra' with your preferred name)
+   $ conda create -n ai-infra python=3.11
+   $ conda activate ai-infra
+
+   # Install dependencies
+   # Sync dependencies using uv (ensure requirements.txt is up-to-date)
+   $ uv sync
+   ```
 
 ## Usage
-You can run the service testers or extend the stack with your own plugins.
+Once the infrastructure services are running and the Python environment is set up, you can run the connection tests:
 
 ```bash
-# Example: Run all service tests
-$ python app/main.py
+# Run connection tests for all services
+$ python -m app.connection_tester
 ```
 
 ## Contributing
