@@ -1,0 +1,14 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# 项目结构说明
+
+本项目的主要入口为 [main.py](mdc:main.py)，包含主函数 `main()`，用于启动程序。
+
+- [pyproject.toml](mdc:pyproject.toml)：项目的 Python 配置文件，定义了项目名称、版本、依赖等信息。
+- [README.md](mdc:README.md)：项目简介文档。
+- [.python-version](mdc:.python-version)：指定 Python 版本（3.13）。
+
+所有规则文件应存放于 [.cursor/rules](mdc:.cursor/rules) 目录，文件扩展名为 `.mdc`。

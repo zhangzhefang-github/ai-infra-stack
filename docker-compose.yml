@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: testuser
+      MYSQL_PASSWORD: testpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    # mem_limit and cpus can be re-added later if needed
+    # mem_limit: 128m 
+    # cpus: '0.5'
+
+  redis:
+    image: redis:7.0-alpine
+    command: redis-server --maxmemory 64mb --maxmemory-policy allkeys-lru --save "" --appendonly no
+    ports:
+      - "6379:6379"
+
+  elasticsearch:
+    image: elasticsearch:8.11.1
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - bootstrap.memory_lock=true
+      - ES_JAVA_OPTS=-Xms128m -Xmx128m
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65535
+        hard: 65535
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - ai-infra-stack-net
+
+  neo4j:
+    image: neo4j:5.16.0-community
+    environment:
+      - NEO4J_AUTH=neo4j/testpassword
+      - NEO4J_server_memory_heap_initial__size=128M
+      - NEO4J_server_memory_heap_max__size=128M
+      - NEO4J_server_memory_pagecache_size=64M
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+
+volumes:
+  mysql_data: 
+networks:
+  ai-infra-stack-net:
+    driver: bridge
+    # 不启用 IPv6，避免 Docker Desktop 重启后强制检测变化
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"
